@@ -24,7 +24,6 @@ public class TodoController {
             @RequestParam(value = "name") String identity,
             @RequestParam() String id
     ) {
-        System.out.println(id);
         return id + " " + TodoController.hello + identity;
     }
 
