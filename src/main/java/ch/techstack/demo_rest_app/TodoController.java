@@ -1,8 +1,12 @@
 package ch.techstack.demo_rest_app;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
 
 @RestController
 public class TodoController {
@@ -21,11 +25,17 @@ public class TodoController {
             @RequestParam() String id
     ) {
         System.out.println(id);
-        return TodoController.hello + identity;
+        return id + " " + TodoController.hello + identity;
     }
 
-    @GetMapping("/say")
-    public String say() {
-        return "####";
+    // http://localhost:8080/hi?name=admin
+    @GetMapping("/hi")
+    public ResponseEntity<String> hi(@RequestParam() String name) {
+        // System.out.println(name);
+
+        if(name.equals("admin"))
+            return new ResponseEntity<>("Hi " + name, HttpStatus.OK);
+
+        return new ResponseEntity<>("Error: " + name, HttpStatus.BAD_REQUEST);
     }
 }
