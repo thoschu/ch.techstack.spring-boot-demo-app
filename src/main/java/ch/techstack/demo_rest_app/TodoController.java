@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class TodoController {
     protected static final String hello = "Hello ";
     private final String textHelloWorld = TodoController.hello + "World!";
+    Todo todo;
 
     @GetMapping
     public String hello() {
@@ -32,8 +33,14 @@ public class TodoController {
     //    }
     @PostMapping("/todo")
     public ResponseEntity<Todo> createTodo(@RequestBody() Todo newTodo) {
-        System.out.println(newTodo.getDescription());
+        // System.out.println(newTodo.getDescription());
+        this.todo = newTodo;
         return new ResponseEntity<>(newTodo, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/todo")
+    public ResponseEntity<Todo> fetchTodo() {
+        return new ResponseEntity<>(this.todo, HttpStatus.OK);
     }
 
     // http://localhost:8080/hi?name=admin
