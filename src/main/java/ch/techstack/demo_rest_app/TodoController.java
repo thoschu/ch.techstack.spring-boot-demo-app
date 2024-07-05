@@ -2,15 +2,11 @@ package ch.techstack.demo_rest_app;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TodoController {
-    private static final String hello = "Hello ";
+    protected static final String hello = "Hello ";
     private final String textHelloWorld = TodoController.hello + "World!";
 
     @GetMapping
@@ -25,6 +21,19 @@ public class TodoController {
             @RequestParam() String id
     ) {
         return id + " " + TodoController.hello + identity;
+    }
+
+    // >>> body
+    //    {
+    //        "id": 1,
+    //        "title": "Foo bar baz",
+    //        "description": "Just a test",
+    //        "isDone": true
+    //    }
+    @PostMapping("/todo")
+    public ResponseEntity<Todo> createTodo(@RequestBody() Todo newTodo) {
+        System.out.println(newTodo.getDescription());
+        return new ResponseEntity<>(newTodo, HttpStatus.CREATED);
     }
 
     // http://localhost:8080/hi?name=admin
