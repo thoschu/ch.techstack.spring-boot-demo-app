@@ -16,3 +16,11 @@
 
 ### MySQL
 > https://hub.docker.com/_/mysql
+> 
+> docker compose up -d
+> 
+
+### MySQL Workbench
+> https://www.mysql.com/products/workbench/
+> 
+
