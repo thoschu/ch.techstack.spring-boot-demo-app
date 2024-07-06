@@ -1,5 +1,6 @@
 package ch.techstack.demo_rest_app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 public class TodoController {
     protected static final String hello = "Hello ";
     private final String textHelloWorld = TodoController.hello + "World!";
+
+    @Autowired
+    private TodoRepository todoRepository;
 
     protected TodoController() {}
 
@@ -35,6 +39,9 @@ public class TodoController {
     @PostMapping("/todo")
     public ResponseEntity<Todo> createTodo(@RequestBody() Todo newTodo) {
         // save in db
+
+        todoRepository.save(newTodo);
+
         return new ResponseEntity<>(newTodo, HttpStatus.CREATED);
     }
 

@@ -25,3 +25,11 @@
 ### MySQL Workbench
 > https://www.mysql.com/products/workbench/
 > 
+
+### Jackson Project
+> https://github.com/FasterXML/jackson
+> 
+
+### Hibernate ORM
+> https://hibernate.org/orm/
+> 
