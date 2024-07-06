@@ -39,7 +39,9 @@ public class TodoController {
     }
 
     @GetMapping("/todo")
-    public ResponseEntity<Todo> fetchTodo() {
+    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") int id) {
+        this.todo.setId(id);
+
         return new ResponseEntity<>(this.todo, HttpStatus.OK);
     }
 
