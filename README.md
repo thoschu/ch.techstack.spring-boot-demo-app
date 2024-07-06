@@ -4,9 +4,11 @@
 
 ### spring initializr
 > https://start.spring.io
+> 
 
 ### Start with Maven
 > ./mvnw spring-boot:run
+> 
 
 ### Build JAR with Maven
 > ./mvnw clean package
@@ -23,4 +25,3 @@
 ### MySQL Workbench
 > https://www.mysql.com/products/workbench/
 > 
-

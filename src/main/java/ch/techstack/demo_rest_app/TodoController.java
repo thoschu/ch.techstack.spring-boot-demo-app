@@ -10,6 +10,14 @@ public class TodoController {
     private final String textHelloWorld = TodoController.hello + "World!";
     Todo todo;
 
+    protected TodoController() {
+        todo = new Todo();
+
+        todo.setTitle("Test title...");
+        todo.setDescription("Test description...");
+        todo.setIsDone(false);
+    }
+
     @GetMapping
     public String hello() {
         return this.textHelloWorld;
@@ -40,7 +48,7 @@ public class TodoController {
 
     @GetMapping("/todo")
     public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") int id) {
-        this.todo.setId(id);
+        todo.setId((long) id);
 
         return new ResponseEntity<>(this.todo, HttpStatus.OK);
     }
