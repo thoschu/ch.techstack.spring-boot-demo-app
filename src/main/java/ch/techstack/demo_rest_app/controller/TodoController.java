@@ -47,14 +47,24 @@ public class TodoController {
     }
 
     @GetMapping("/todo")
-    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") Long id) {
-        Optional<Todo> todo = todoService.findById(id);
+    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") Optional<Long> id) {
 
-        if(todo.isPresent()) {
-            return new ResponseEntity<>(todo.get(), HttpStatus.OK);
+        if(id.isPresent()) {
+            Optional<Todo> todo = todoService.findById(id.get());
+
+            if(todo.isPresent()) {
+                return new ResponseEntity<>(todo.get(), HttpStatus.FOUND);
+            }
         }
 
-        return new ResponseEntity<>(new Todo(), HttpStatus.OK);
+        return new ResponseEntity<>(new Todo(), HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/todo/all")
+    public ResponseEntity<Iterable<Todo>> fetchAllTodos() {
+        Iterable<Todo> todo = todoService.findAll();
+
+        return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 
     // http://localhost:8080/hi?name=admin
