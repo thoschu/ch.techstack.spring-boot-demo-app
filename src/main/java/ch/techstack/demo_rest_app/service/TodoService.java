@@ -1,9 +1,12 @@
 package ch.techstack.demo_rest_app.service;
 
-import ch.techstack.demo_rest_app.model.Todo;
-import ch.techstack.demo_rest_app.repositoty.TodoRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ch.techstack.demo_rest_app.model.Todo;
+import ch.techstack.demo_rest_app.repositoty.TodoRepository;
 
 @Service
 public class TodoService {
@@ -19,7 +22,11 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public void log(String message) {
+    public Optional<Todo> findById(Long id) {
+        return todoRepository.findById(id);
+    }
+
+    public void log(Object message) {
         System.out.println(message);
     }
 }

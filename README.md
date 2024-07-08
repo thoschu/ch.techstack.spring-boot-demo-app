@@ -5,7 +5,7 @@
 > 
 > docker compose up -d
 >
-> http://localhost:8080/todo
+> http://localhost:8080/
 > 
 
 ## Notices
@@ -32,6 +32,10 @@
 
 ### MySQL Workbench
 > https://www.mysql.com/products/workbench/
+> 
+> SELECT * FROM basics.persons;
+> 
+> SELECT * FROM basics.todos;
 > 
 
 ### Jackson Project

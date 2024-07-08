@@ -1,5 +1,5 @@
 services:
-  api_service:
+  api:
     build: .
     image: thoschu/spring-boot-demo-app
     restart: always

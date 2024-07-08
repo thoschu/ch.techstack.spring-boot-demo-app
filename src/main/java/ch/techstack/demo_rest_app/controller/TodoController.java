@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class TodoController {
     protected static final String hello = "Hello ";
@@ -38,16 +40,19 @@ public class TodoController {
     //        "isDone": true
     //    }
     @PostMapping("/todo")
-    public ResponseEntity<Todo> createTodo(@RequestBody() Todo newTodo) {
-        // save in db
+    public ResponseEntity<Todo> createTodo(@RequestBody() Todo todo) {
+        todoService.save(todo);
 
-        todoService.save(newTodo);
-
-        return new ResponseEntity<>(newTodo, HttpStatus.CREATED);
+        return new ResponseEntity<>(todo, HttpStatus.CREATED);
     }
 
     @GetMapping("/todo")
-    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") int id) {
+    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") Long id) {
+        Optional<Todo> todo = todoService.findById(id);
+
+        if(todo.isPresent()) {
+            return new ResponseEntity<>(todo.get(), HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(new Todo(), HttpStatus.OK);
     }
