@@ -67,10 +67,28 @@ public class TodoController {
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 
+    @DeleteMapping("/todo")
+    public ResponseEntity<Boolean> deleteTodo(@RequestParam(value = "id") Long id) {
+        Boolean todo = todoService.deleteById(id);
+
+        return new ResponseEntity<>(todo, HttpStatus.OK);
+    }
+
+    @PutMapping("/todo")
+    public ResponseEntity<Todo> editTodo(@RequestBody() Todo editedTodo) {
+        Optional<Todo> todo = todoService.findById(editedTodo.getId());
+
+        if(todo.isPresent()) {
+            return new ResponseEntity<>(editedTodo, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(editedTodo, HttpStatus.NOT_FOUND);
+    }
+
     // http://localhost:8080/hi?name=admin
     @GetMapping("/hi")
     public ResponseEntity<String> hi(@RequestParam() String name) {
-        // System.out.println(name);
+        todoService.log(name);
 
         if(name.equals("admin"))
             return new ResponseEntity<>("Hi " + name, HttpStatus.OK);
