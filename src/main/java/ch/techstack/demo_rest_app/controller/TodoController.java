@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+// @RestController("/todo")
 @RestController
 public class TodoController {
     protected static final String hello = "Hello ";
@@ -79,10 +80,31 @@ public class TodoController {
         Optional<Todo> todo = todoService.findById(editedTodo.getId());
 
         if(todo.isPresent()) {
+            todoService.save(editedTodo);
+
             return new ResponseEntity<>(editedTodo, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(editedTodo, HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/todo/setDone")
+    public ResponseEntity<Todo> toggleTodoIsDone(@RequestParam(value = "id") Long id) {
+        Optional<Todo> todo = todoService.findById(id);
+
+        if(todo.isPresent()) {
+            Todo tempTodo = todo.get();
+            boolean currentIsDone = tempTodo.getIsDone();
+            boolean newIsDone = !currentIsDone;
+
+            tempTodo.setIsDone(newIsDone);
+
+            todoService.save(tempTodo);
+
+            return new ResponseEntity<>(tempTodo, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new Todo(), HttpStatus.NOT_FOUND);
     }
 
     // http://localhost:8080/hi?name=admin
