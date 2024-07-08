@@ -1,0 +1,29 @@
+services:
+  api_service:
+    build: .
+    image: thoschu/spring-boot-demo-app
+    restart: always
+    container_name: api_service
+    ports:
+      - "8080:8080"
+    networks:
+      - mysql-net
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysql:3306/basics?allowPublicKeyRetrieval=true
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql
+    restart: always
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql-net
+    environment:
+      MYSQL_DATABASE: basics
+      MYSQL_USER: tom
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+networks:
+  mysql-net:
