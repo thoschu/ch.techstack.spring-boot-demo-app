@@ -2,7 +2,7 @@ package ch.techstack.demo_rest_app.model;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name="todos")
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
