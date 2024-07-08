@@ -3,9 +3,9 @@
 ## Docker
 > https://docs.docker.com/engine/install/
 > 
-> docker compose up -d
+> > docker compose up -d
 >
-> http://localhost:8080/
+> > > http://localhost:8080/
 > 
 
 ## Notices
