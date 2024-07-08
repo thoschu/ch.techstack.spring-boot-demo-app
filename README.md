@@ -20,9 +20,7 @@
 
 ### MySQL
 > https://hub.docker.com/_/mysql
-> 
-> docker compose up -d
-> 
+>
 
 ### MySQL Workbench
 > https://www.mysql.com/products/workbench/
@@ -44,4 +42,6 @@
 > docker run -d -p 81:8080 --name demo-app thoschu/spring-boot-demo-app
 > 
 > docker run -p 81:8080 --name demo-app --network my-network -t thoschu/spring-boot-demo-app 
+> 
+> > docker compose up -d
 > 
