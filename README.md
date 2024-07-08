@@ -1,5 +1,13 @@
 # ch.techstack.spring-boot-demo-app
 
+## Docker
+> https://docs.docker.com/engine/install/
+> 
+> docker compose up -d
+>
+> http://localhost:8080/todo
+> 
+
 ## Notices
 
 ### spring initializr
@@ -42,6 +50,4 @@
 > docker run -d -p 81:8080 --name demo-app thoschu/spring-boot-demo-app
 > 
 > docker run -p 81:8080 --name demo-app --network my-network -t thoschu/spring-boot-demo-app 
-> 
-> > docker compose up -d
-> 
+>
