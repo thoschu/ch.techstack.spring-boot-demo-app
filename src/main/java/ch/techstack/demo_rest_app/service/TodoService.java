@@ -18,10 +18,6 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
-    public void savePatch(Todo todo) {
-
-    }
-
     public Iterable<Todo> findAll(){
         return todoRepository.findAll();
     }
