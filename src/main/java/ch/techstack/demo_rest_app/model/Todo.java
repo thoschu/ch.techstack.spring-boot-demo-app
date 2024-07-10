@@ -5,14 +5,20 @@ import jakarta.persistence.*;
 @Entity(name="todos")
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     private String title;
+
     @Column
     private String description;
+
     @Column
     private boolean isDone;
+
+    @Column
+    private Long userId;
 
     public Todo() {
         super();
@@ -48,5 +54,13 @@ public class Todo {
 
     public void setIsDone(boolean done) {
         isDone = done;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

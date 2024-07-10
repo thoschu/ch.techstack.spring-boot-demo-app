@@ -6,18 +6,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
-       this.repository = userRepository;
+       this.userRepository = userRepository;
     }
 
     public User save(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
+    }
+
+    public Iterable<User> findAll(){
+        return userRepository.findAll();
     }
 
     public User fetchUser(Long id) {
-        return repository.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     public void log(Object text) {

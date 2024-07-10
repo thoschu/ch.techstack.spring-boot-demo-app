@@ -2,19 +2,17 @@ package ch.techstack.demo_rest_app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -22,6 +20,18 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    public Set<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(Set<Todo> todos) {
+        this.todos = todos;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "userId")
+    private Set<Todo> todos;
 
     public User() {
         super();
@@ -51,7 +61,7 @@ public class User {
         this.email = email;
     }
 
-    @JsonIgnore
+    // @JsonIgnore
     public String getPassword() {
         return password;
     }

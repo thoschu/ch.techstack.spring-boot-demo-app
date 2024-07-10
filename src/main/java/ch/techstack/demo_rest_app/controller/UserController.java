@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ch.techstack.demo_rest_app.model.User;
 import ch.techstack.demo_rest_app.service.UserService;
 
+import java.util.Iterator;
+
 @RestController
 public class UserController {
     private final static String text = "Foo bar baz user";
@@ -25,12 +27,19 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody() User user) {
-        try {
+        boolean hasUser = false;
+        Iterable<User> userList = this.userService.findAll();
+
+        for (User value : userList) {
+            hasUser = value.getEmail().equals(user.getEmail());
+        }
+
+        if(!hasUser) {
             User newUser = this.userService.save(user);
 
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        } catch (Error err) {
-            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         }
+
+        return new ResponseEntity<>(user, HttpStatus.CONFLICT);
     }
 }
