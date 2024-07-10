@@ -8,6 +8,7 @@ import ch.techstack.demo_rest_app.model.User;
 import ch.techstack.demo_rest_app.service.UserService;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -23,6 +24,16 @@ public class UserController {
     @GetMapping("/test")
     public String registered() {
         return UserController.text;
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validate(
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "password") String password
+    ) throws Exception {
+        Optional<User> user = userService.findByEmailAndPassword(email, password);
+
+        return new ResponseEntity<>(user.isPresent(), HttpStatus.OK);
     }
 
     @GetMapping("/user")
