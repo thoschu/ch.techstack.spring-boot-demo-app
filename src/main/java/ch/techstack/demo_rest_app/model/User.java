@@ -25,6 +25,8 @@ public class User {
     @JoinColumn(name = "userId")
     private Set<Todo> todos;
 
+    private String secret;
+
     public User() {
         super();
     }
@@ -32,7 +34,6 @@ public class User {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,7 +41,6 @@ public class User {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -48,16 +48,13 @@ public class User {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // @JsonIgnore
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -65,8 +62,15 @@ public class User {
     public Set<Todo> getTodos() {
         return todos;
     }
-
     public void setTodos(Set<Todo> todos) {
         this.todos = todos;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+    @JsonIgnore
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
