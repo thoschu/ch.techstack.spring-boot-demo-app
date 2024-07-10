@@ -25,8 +25,6 @@ public class User {
     @JoinColumn(name = "userId")
     private Set<Todo> todos;
 
-
-
     public User() {
         super();
     }

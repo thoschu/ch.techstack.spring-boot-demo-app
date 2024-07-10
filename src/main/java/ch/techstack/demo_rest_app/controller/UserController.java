@@ -20,9 +20,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/register")
+    @GetMapping("/test")
     public String registered() {
         return UserController.text;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<User> getUserById(@RequestParam(value = "id") Long id) {
+        User user = userService.findById(id);
+
+        if(user == null) {
+            return new ResponseEntity<>(new User(), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/register")

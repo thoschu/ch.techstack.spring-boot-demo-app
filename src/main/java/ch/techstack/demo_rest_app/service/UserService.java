@@ -20,7 +20,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User fetchUser(Long id) {
+    public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
