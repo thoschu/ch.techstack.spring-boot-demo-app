@@ -25,7 +25,7 @@ public class TodoController {
     }
 
     // http://localhost:8080/greet?name=Tom&id=325
-    @GetMapping("/greet")
+    @GetMapping("/greeting")
     public String greeting(
             @RequestParam(value = "name") String identity,
             @RequestParam() String id
@@ -88,7 +88,7 @@ public class TodoController {
         return new ResponseEntity<>(editedTodo, HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping("/todo/setDone")
+    @PatchMapping("/todo/done")
     public ResponseEntity<Todo> toggleTodoIsDone(@RequestParam(value = "id") Long id) {
         Optional<Todo> todo = todoService.findById(id);
 

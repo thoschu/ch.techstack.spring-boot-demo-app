@@ -27,7 +27,7 @@ public class UserController {
         return UserController.text;
     }
 
-    @GetMapping("/validate/secret")
+    @GetMapping("/validation/secret")
     public ResponseEntity<String> getSecret(
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password
@@ -49,7 +49,7 @@ public class UserController {
 //        return new ResponseEntity<>("Wrong credentials", HttpStatus.FORBIDDEN);
     }
 
-    @GetMapping("/validate")
+    @GetMapping("/validation")
     public ResponseEntity<Boolean> validate(
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password
@@ -70,7 +70,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     public ResponseEntity<User> register(@RequestBody() User user) {
         boolean hasUser = false;
         Iterable<User> userList = this.userService.findAll();
