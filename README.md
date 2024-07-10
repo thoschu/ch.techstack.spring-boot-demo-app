@@ -19,6 +19,8 @@
 ### Start with Maven
 > ./mvnw spring-boot:run
 > 
+> mvn spring-boot:run
+> 
 
 ### Build JAR with Maven
 > ./mvnw clean package

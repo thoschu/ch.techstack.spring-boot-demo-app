@@ -21,17 +21,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public Set<Todo> getTodos() {
-        return todos;
-    }
-
-    public void setTodos(Set<Todo> todos) {
-        this.todos = todos;
-    }
-
     @OneToMany
     @JoinColumn(name = "userId")
     private Set<Todo> todos;
+
+
 
     public User() {
         super();
@@ -68,5 +62,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(Set<Todo> todos) {
+        this.todos = todos;
     }
 }
