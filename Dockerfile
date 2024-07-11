@@ -9,6 +9,12 @@ COPY pom.xml /home/app
 
 RUN mvn -f /home/app/pom.xml clean package
 
+#
+
+FROM maven:3.8.3-openjdk-17
+
+COPY --from=build /home/app/target/spring-docker.jar /spring-docker.jar
+
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/home/app/target/spring-docker.jar"]
+ENTRYPOINT ["java", "-jar", "/spring-docker.jar"]

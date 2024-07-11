@@ -15,10 +15,10 @@ public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
 
-    private UserRepository userRepository;
+    // private UserRepository userRepository;
 
     protected TodoService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        // this.userRepository = userRepository;
     }
 
     public void save(Todo todo) {
