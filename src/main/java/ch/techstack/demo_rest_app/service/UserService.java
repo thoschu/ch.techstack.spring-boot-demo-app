@@ -14,6 +14,10 @@ public class UserService {
        this.userRepository = userRepository;
     }
 
+    public Optional<User> findBySecret(String secret) {
+        return userRepository.findBySecret(secret);
+    }
+
     public Optional<User> findByEmailAndPassword(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
     }

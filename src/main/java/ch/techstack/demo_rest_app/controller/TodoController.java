@@ -62,8 +62,10 @@ public class TodoController {
     }
 
     @GetMapping("/todo/all")
-    public ResponseEntity<Iterable<Todo>> fetchAllTodos() {
+    public ResponseEntity<Iterable<Todo>> fetchAllTodos(@RequestHeader("api-secret") String secret) {
         Iterable<Todo> todo = todoService.findAll();
+
+        System.out.println(secret);
 
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
