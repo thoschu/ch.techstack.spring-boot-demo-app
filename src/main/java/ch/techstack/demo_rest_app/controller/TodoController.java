@@ -1,21 +1,25 @@
 package ch.techstack.demo_rest_app.controller;
 
 import ch.techstack.demo_rest_app.model.Todo;
+import ch.techstack.demo_rest_app.model.User;
 import ch.techstack.demo_rest_app.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 // @RestController("/todo")
 @RestController
 public class TodoController {
     protected static final String hello = "Hello ";
-    private final String textHelloWorld = TodoController.hello + "World!";
+    private final String textHelloWorld;
     private final TodoService todoService;
 
     protected TodoController(TodoService todoService) {
+        textHelloWorld = TodoController.hello + "World!";
+
         this.todoService = todoService;
     }
 
@@ -61,13 +65,28 @@ public class TodoController {
         return new ResponseEntity<>(new Todo(), HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/todo/all/secret")
+    public ResponseEntity<Iterable<Todo>> fetchAllTodosBySecret(@RequestHeader("api-secret") String secret) {
+        // Optional<User> userBySecret = todoService.findBySecret(secret);
+        var userBySecret = todoService.findBySecret(secret);
+
+        if (userBySecret.isPresent()) {
+            User user = userBySecret.get();
+            Long userId = user.getId();
+
+            Set<Todo> todos = todoService.findAllByUserId(userId);
+
+            return new ResponseEntity<>(todos, HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.FORBIDDEN + ": Invalid api secret", HttpStatus.FORBIDDEN);
+    }
+
     @GetMapping("/todo/all")
-    public ResponseEntity<Iterable<Todo>> fetchAllTodos(@RequestHeader("api-secret") String secret) {
-        Iterable<Todo> todo = todoService.findAll();
+    public ResponseEntity<Iterable<Todo>> fetchAllTodos() {
+        Iterable<Todo> todos = todoService.findAll();
 
-        System.out.println(secret);
-
-        return new ResponseEntity<>(todo, HttpStatus.OK);
+        return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
     @DeleteMapping("/todo")

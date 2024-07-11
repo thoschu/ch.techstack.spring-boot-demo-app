@@ -9,6 +9,9 @@ COPY pom.xml /home/app
 
 RUN mvn -f /home/app/pom.xml clean package
 
+
+#
+# Serve stage
 #
 
 FROM maven:3.8.3-openjdk-17

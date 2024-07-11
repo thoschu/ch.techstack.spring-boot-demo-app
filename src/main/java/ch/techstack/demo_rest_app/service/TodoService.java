@@ -1,8 +1,9 @@
 package ch.techstack.demo_rest_app.service;
 
 import java.util.Optional;
+import java.util.Set;
 
-import ch.techstack.demo_rest_app.repositoty.UserRepository;
+import ch.techstack.demo_rest_app.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,18 @@ public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
 
-    // private UserRepository userRepository;
+    private final UserService userService;
 
-    protected TodoService(UserRepository userRepository) {
-        // this.userRepository = userRepository;
+    protected TodoService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public Set<Todo> findAllByUserId(Long userId) {
+        return todoRepository.findAllByUserId(userId);
+    }
+
+    public Optional<User> findBySecret(String secret) {
+        return userService.findBySecret(secret);
     }
 
     public void save(Todo todo) {
