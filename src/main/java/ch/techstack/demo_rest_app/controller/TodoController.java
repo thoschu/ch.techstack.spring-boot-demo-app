@@ -23,6 +23,11 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    @GetMapping("/test/{requestedId}")
+    private ResponseEntity<String> testById(@PathVariable Long requestedId) {
+        return ResponseEntity.ok(textHelloWorld + " -<>- " + requestedId);
+    }
+
     @GetMapping
     public String hello() {
         return this.textHelloWorld;
