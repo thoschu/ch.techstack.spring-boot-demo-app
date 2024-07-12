@@ -1,9 +1,20 @@
 package ch.techstack.demo_rest_app;
 
-//@SpringBootTest
+import ch.techstack.demo_rest_app.controller.TodoController;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
 class BasicApplicationTests {
 
-//	@Test
-	void contextLoads() {
+	@Autowired
+	private TodoController controller;
+
+	@Test
+	void contextLoads() throws Exception {
+		assertThat(controller).isNotNull();
 	}
 }
