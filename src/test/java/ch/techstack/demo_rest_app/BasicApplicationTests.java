@@ -1,5 +1,4 @@
-package com.example.demo;
-
+package ch.techstack.demo_rest_app;
 
 //@SpringBootTest
 class BasicApplicationTests {
@@ -7,5 +6,4 @@ class BasicApplicationTests {
 //	@Test
 	void contextLoads() {
 	}
-
 }
