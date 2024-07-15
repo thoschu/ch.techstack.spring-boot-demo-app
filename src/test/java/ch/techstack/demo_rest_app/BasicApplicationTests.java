@@ -1,8 +1,10 @@
 package ch.techstack.demo_rest_app;
 
 import ch.techstack.demo_rest_app.controller.TodoController;
+import ch.techstack.demo_rest_app.model.Todo;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,19 @@ class BasicApplicationTests {
 
 		// assertThat(title).isEqualTo("Test");
 		assertThat(title).isEqualTo(null);
+	}
+
+	@Test
+	void shouldReturnTodoAll() throws JSONException {
+		ResponseEntity<Iterable> response = restTemplate.getForEntity("/todo/all", Iterable.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		Iterable<Todo> todos = response.getBody();
+
+		assertThat(todos).isNotNull();
+
+		assertThat(Lists.newArrayList(todos.iterator()).size()).isNotEqualTo(0);
 	}
 
 	@Test
