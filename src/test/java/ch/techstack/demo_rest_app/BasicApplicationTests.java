@@ -26,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // @SpringBootTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
+// @DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BasicApplicationTests {
 	@Autowired
 	private TestRestTemplate restTemplate;
