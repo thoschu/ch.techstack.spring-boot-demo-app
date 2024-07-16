@@ -114,13 +114,10 @@ public class TodoController {
     }
 
     // http://localhost:8080/todo/alls?page=1&size=3&sort=id,desc
+    // http://localhost:8080/todo/alls?page=1&size=3&sort=id,asc
+    // http://localhost:8080/todo/alls?page=1
     @GetMapping("todo/alls")
-    private ResponseEntity findAll(Pageable pageable) {
-
-        System.out.println(pageable);
-
-        System.out.println(pageable.getSort());
-        System.out.println(pageable.getSortOr(pageable.getSort()));
+    private ResponseEntity<List<Todo>>findAll(Pageable pageable) {
 
         Page<Todo> page = todoService.findAll(
                 pageable
@@ -138,10 +135,6 @@ public class TodoController {
         );
 
         return ResponseEntity.ok(page.getContent());
-
-//        Iterable<Todo> todos = todoService.findAll();
-//
-//        return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
     @DeleteMapping("/todo")
