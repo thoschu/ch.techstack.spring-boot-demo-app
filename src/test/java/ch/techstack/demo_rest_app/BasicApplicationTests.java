@@ -1,7 +1,9 @@
 package ch.techstack.demo_rest_app;
 
 import ch.techstack.demo_rest_app.controller.TodoController;
+import ch.techstack.demo_rest_app.controller.UserController;
 import ch.techstack.demo_rest_app.model.Todo;
+import ch.techstack.demo_rest_app.model.User;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.assertj.core.util.Lists;
@@ -13,8 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.json.JSONObject;
+import java.net.URI;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +28,35 @@ class BasicApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@Autowired
-	private TodoController controller;
+	private TodoController todoController;
+
+	@Autowired
+	private UserController userController;
+
+	@Test
+	void shouldCreateANewUser() {
+		String password = "mamapapa";
+		User newUser = new User();
+		// newUser.setId(10000000L);
+		newUser.setUsername("John Smith");
+		newUser.setEmail("john.smith@" + this.getRandowmString() + ".com");
+		newUser.setPassword(password);
+		newUser.setSecret("xxx-aaa-iii");
+
+		ResponseEntity<Void> registrationResponse = restTemplate.postForEntity("/registration", newUser, Void.class);
+		assertThat(registrationResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+		URI locationOfNewUser = registrationResponse.getHeaders().getLocation();
+		ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewUser, String.class);
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+		Number id = documentContext.read("$.id");
+		String pw = documentContext.read("$.password");
+
+		assertThat(id).isNotNull();
+		assertThat(password).isEqualTo(pw);
+	}
 
 	@Test
 	void shouldReturnTodoNull() throws JSONException {
@@ -63,6 +94,14 @@ class BasicApplicationTests {
 
 	@Test
 	void contextLoads() throws Exception {
-		assertThat(controller).isNotNull();
+		assertThat(todoController).isNotNull();
+		assertThat(userController).isNotNull();
+	}
+
+	private String getRandowmString() {
+		return UUID.randomUUID()
+				.toString()
+				.replaceAll("-", "")
+				.substring(0, 7);
 	}
 }

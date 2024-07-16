@@ -1,12 +1,16 @@
 package ch.techstack.demo_rest_app.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ch.techstack.demo_rest_app.model.User;
 import ch.techstack.demo_rest_app.service.UserService;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,8 +63,8 @@ public class UserController {
         return new ResponseEntity<>(user.isPresent(), HttpStatus.OK);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<User> getUserById(@RequestParam(value = "id") Long id) {
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.findById(id);
 
         if(user == null) {
@@ -71,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<User> register(@RequestBody() User user) {
+    public ResponseEntity<Void> register(@RequestBody() User user, UriComponentsBuilder ucb) throws URISyntaxException {
         boolean hasUser = false;
         Iterable<User> userList = this.userService.findAll();
 
@@ -84,9 +88,21 @@ public class UserController {
 
             User newUser = this.userService.save(user);
 
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            URI locationOfNewUser = ucb
+                    .path("user/{id}")
+                    .buildAndExpand(newUser.getId())
+                    .toUri();
+
+//            return ResponseEntity
+//                    .status(HttpStatus.CREATED)
+//                    .header(HttpHeaders.LOCATION, new URI("/user/" + newUser.getId()).toASCIIString())
+//                    .build();
+//            return ResponseEntity.created(new URI("/user/" + newUser.getId())).build();
+//            return ResponseEntity.created(URI.create("/user/" + newUser.getId())).build();
+
+            return ResponseEntity.created(locationOfNewUser).build();
         }
 
-        return new ResponseEntity<>(user, HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }

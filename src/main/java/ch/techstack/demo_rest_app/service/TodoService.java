@@ -5,6 +5,8 @@ import java.util.Set;
 
 import ch.techstack.demo_rest_app.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ch.techstack.demo_rest_app.model.Todo;
@@ -34,7 +36,11 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
-    public Iterable<Todo> findAll(){
+    public Page<Todo> findAll(Pageable pageable) {
+        return todoRepository.findAll(pageable);
+    }
+
+    public Iterable<Todo> findAll() {
         return todoRepository.findAll();
     }
 

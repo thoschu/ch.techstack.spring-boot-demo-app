@@ -2,11 +2,21 @@ package ch.techstack.demo_rest_app.controller;
 
 import ch.techstack.demo_rest_app.model.Todo;
 import ch.techstack.demo_rest_app.model.User;
+import ch.techstack.demo_rest_app.repositoty.TodoRepository;
 import ch.techstack.demo_rest_app.service.TodoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,10 +60,19 @@ public class TodoController {
     //        "isDone": true
     //    }
     @PostMapping("/todo")
-    public ResponseEntity<Todo> createTodo(@RequestBody() Todo todo) {
+    public ResponseEntity<Todo> createTodo(@RequestBody() Todo todo) throws URISyntaxException {
         todoService.save(todo);
 
         return new ResponseEntity<>(todo, HttpStatus.CREATED);
+
+//        return ResponseEntity
+//                .created(new URI("/todo/" + todo.getId()))
+//                .build();
+
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .header(HttpHeaders.LOCATION, "/todo/" + todo.getId())
+//                .build();
     }
 
     @GetMapping("/todo")
@@ -92,6 +111,37 @@ public class TodoController {
         Iterable<Todo> todos = todoService.findAll();
 
         return new ResponseEntity<>(todos, HttpStatus.OK);
+    }
+
+    // http://localhost:8080/todo/alls?page=1&size=3&sort=id,desc
+    @GetMapping("todo/alls")
+    private ResponseEntity findAll(Pageable pageable) {
+
+        System.out.println(pageable);
+
+        System.out.println(pageable.getSort());
+        System.out.println(pageable.getSortOr(pageable.getSort()));
+
+        Page<Todo> page = todoService.findAll(
+                pageable
+//                PageRequest.of(
+//                        pageable.getPageNumber(),
+//                        pageable.getPageSize(),
+//                        pageable.getSortOr(
+////                                Sort.by(
+////                                        Sort.Direction.ASC,
+////                                        "id"
+////                                )
+//                                pageable.getSort()
+//                        )
+//                )
+        );
+
+        return ResponseEntity.ok(page.getContent());
+
+//        Iterable<Todo> todos = todoService.findAll();
+//
+//        return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
     @DeleteMapping("/todo")
