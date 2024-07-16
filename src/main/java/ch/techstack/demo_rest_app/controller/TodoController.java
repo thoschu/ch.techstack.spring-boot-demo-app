@@ -118,6 +118,7 @@ public class TodoController {
     // http://localhost:8080/todo/alls?page=1
     @GetMapping("todo/alls")
     private ResponseEntity<List<Todo>>findAll(Pageable pageable) {
+        System.out.println(pageable);
 
         Page<Todo> page = todoService.findAll(
                 pageable
@@ -134,7 +135,9 @@ public class TodoController {
 //                )
         );
 
-        return ResponseEntity.ok(page.getContent());
+        List<Todo> todoList = page.getContent();
+
+        return ResponseEntity.ok(todoList);
     }
 
     @DeleteMapping("/todo")
