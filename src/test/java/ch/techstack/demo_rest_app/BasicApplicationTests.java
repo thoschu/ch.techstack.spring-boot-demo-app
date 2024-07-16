@@ -6,6 +6,7 @@ import ch.techstack.demo_rest_app.model.Todo;
 import ch.techstack.demo_rest_app.model.User;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import net.minidev.json.JSONArray;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONTokener;
@@ -35,6 +36,32 @@ class BasicApplicationTests {
 
 	@Autowired
 	private UserController userController;
+
+	@Test
+	void shouldReturnAllCashCardsWhenListIsRequested1() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/todo/all", String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		int todoCount = documentContext.read("$.length()");
+		assertThat(todoCount).isNotEqualTo(0);
+		assertThat(todoCount).isGreaterThan(2);
+
+		JSONArray ids = documentContext.read("$..id");
+//		assertThat(ids).containsExactlyInAnyOrder(1, 2, 3);
+
+		JSONArray amounts = documentContext.read("$..title");
+//		assertThat(amounts).containsExactlyInAnyOrder("aaa", "bbb", "ccc", "xxx");
+	}
+
+	@Test
+	void shouldReturnAllCashCardsWhenListIsRequested2() {
+		ResponseEntity<Todo[]> response = restTemplate.getForEntity("/todo/all", Todo[].class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().length).isNotEqualTo(0);
+	}
 
 	@Test
 	void shouldCreateANewUser() {

@@ -116,7 +116,7 @@ public class TodoController {
     // http://localhost:8080/todo/alls?page=1&size=3&sort=id,desc
     // http://localhost:8080/todo/alls?page=1&size=3&sort=id,asc
     // http://localhost:8080/todo/alls?page=1
-    @GetMapping("todo/alls")
+    @GetMapping("/todo/alls")
     private ResponseEntity<List<Todo>>findAll(Pageable pageable) {
         System.out.println(pageable);
 
