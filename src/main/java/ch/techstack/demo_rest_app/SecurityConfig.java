@@ -19,55 +19,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
-
-//    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http.build();
-//    }
-
-//    @Bean
-//    SecurityFilterChain filterChainUser(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests(request -> {
-//                            request
-//                                    .requestMatchers("/user/**")
-//                                    .authenticated();
-//                        }
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                .csrf(csrf -> csrf.disable());
-//        return http.build();
-//    }
+    private static final String role = "OWNER";
 
 //    @Bean
 //    SecurityFilterChain filterChainTest(HttpSecurity http) throws Exception {
 //        http
-//                .authorizeHttpRequests(
-//                        request -> request.requestMatchers("/test").authenticated()
+//                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest()
+//                        .permitAll()
 //                )
-//                .httpBasic(Customizer.withDefaults())
-//                .csrf(AbstractHttpConfigurer::disable);
-//
-//        return http.build();
-//    }
-
-//    @Bean
-//    SecurityFilterChain filterChainRegistration(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests(
-//                        request -> request.requestMatchers("/registration").authenticated()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                .csrf(AbstractHttpConfigurer::disable);
-//        return http.build();
-//    }
-
-//    @Bean
-//    SecurityFilterChain filterChainRegistration(HttpSecurity http) throws Exception {
-//        http
 //                .authorizeHttpRequests(request ->
 //                    request
-//                        .requestMatchers("/registration/**")
+//                        .requestMatchers("/test/**")
 //                            .permitAll()
 //                        //.hasRole("OWNER")
 //                        //.fullyAuthenticated()
@@ -84,19 +46,25 @@ class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest()
-//                        .permitAll()
-//                )
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers(
-                                "/greeting/**",
-                                "/todo/**",
-                                "/registration",
-                                "/user/**"
-                        ).authenticated()
+                        request -> request
+                                .requestMatchers(
+                                        "/greeting/**",
+                                        "/todo/**",
+                                        "/registration",
+                                        "/user/**"
+                                ).authenticated()
+                )
+                .authorizeHttpRequests(
+                        request -> request
+                                .requestMatchers(
+                                        "/test/**"
+                                )
+                                .hasRole(SecurityConfig.role)
                 )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 
@@ -113,14 +81,14 @@ class SecurityConfig {
         UserDetails sarah = users
                 .username("sarah")
                 .password(encoder().encode("xyz123"))
-                .roles("OWNER") // new role
+                .roles(SecurityConfig.role) // new role
                 .build();
 
         return new InMemoryUserDetailsManager(tom1, sarah);
     }
 
     @Bean
-    PasswordEncoder encoder() {
+    protected PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 }

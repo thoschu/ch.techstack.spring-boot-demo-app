@@ -40,6 +40,17 @@ class BasicApplicationTests {
 	private UserController userController;
 
 	@Test
+	void shouldReturnTestString() {
+		String expectedInt = "77";
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("sarah", "xyz123")
+				.getForEntity("/test/" + expectedInt, String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isEqualTo("Hello World! -<>- " + expectedInt);
+	}
+
+	@Test
 	void shouldReturnAllTodosWhenListIsRequested1() {
 		ResponseEntity<String> response = restTemplate
 				.withBasicAuth("tom1", "abc123")
