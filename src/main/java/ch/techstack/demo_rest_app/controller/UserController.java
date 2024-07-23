@@ -31,6 +31,19 @@ public class UserController {
         return UserController.text;
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<Void> test(@RequestBody() User user, UriComponentsBuilder ucb) throws URISyntaxException {
+        // Iterable<User> userList = this.userService.findAll();
+        System.out.println(user);
+
+        URI locationOfNewUser = ucb
+                .path("user/{id}")
+                .buildAndExpand("77")
+                .toUri();
+
+        return ResponseEntity.created(locationOfNewUser).build();
+    }
+
     @GetMapping("/validation/secret")
     public ResponseEntity<String> getSecret(
             @RequestParam(value = "email") String email,
@@ -80,7 +93,10 @@ public class UserController {
         Iterable<User> userList = this.userService.findAll();
 
         for (User value : userList) {
-            hasUser = value.getEmail().equals(user.getEmail());
+            String email = user.getEmail();
+            hasUser = value.getEmail().equals(email);
+
+            if(hasUser) break;
         }
 
         if(!hasUser) {

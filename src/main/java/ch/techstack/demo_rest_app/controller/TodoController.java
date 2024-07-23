@@ -11,14 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 // @RestController("/todo")
 @RestController
@@ -39,8 +38,8 @@ public class TodoController {
     }
 
     @GetMapping
-    public String hello() {
-        return this.textHelloWorld;
+    public ResponseEntity<String> hello() {
+        return new ResponseEntity<>(this.textHelloWorld, HttpStatus.OK);
     }
 
     // http://localhost:8080/greet?name=Tom&id=325
@@ -59,7 +58,7 @@ public class TodoController {
     //        "description": "Just a test",
     //        "isDone": true
     //    }
-    @PostMapping("/todo")
+    @PostMapping(value = "/todo")
     public ResponseEntity<Todo> createTodo(@RequestBody() Todo todo) throws URISyntaxException {
         todoService.save(todo);
 
@@ -75,7 +74,7 @@ public class TodoController {
 //                .build();
     }
 
-    @GetMapping("/todo")
+    @GetMapping(value = "/todo")
     public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") Optional<Long> id) {
 
         if(id.isPresent()) {
@@ -106,11 +105,26 @@ public class TodoController {
         return new ResponseEntity(HttpStatus.FORBIDDEN + ": Invalid api secret", HttpStatus.FORBIDDEN);
     }
 
-    @GetMapping("/todo/all")
-    public ResponseEntity<Iterable<Todo>> fetchAllTodos() {
+    @GetMapping(
+            value = "/todo/all"
+//            consumes = MediaType.APPLICATION_JSON_VALUE,
+//            produces = MediaType.APPLICATION_XML_VALUE
+    )
+    public ResponseEntity<Todo[]>  fetchAllTodos() {
         Iterable<Todo> todos = todoService.findAll();
+        Iterator<Todo> iterator = todos.iterator();
+        List<Todo> result = new ArrayList<>();
 
-        return new ResponseEntity<>(todos, HttpStatus.OK);
+        while (iterator.hasNext()) {
+            Todo todo = iterator.next();
+
+            result.add(todo);
+        }
+
+        Todo[] todoArr = new Todo[result.size()];
+        todoArr = result.toArray(todoArr);
+
+        return new ResponseEntity<>(todoArr, HttpStatus.OK);
     }
 
     // http://localhost:8080/todo/alls?page=1&size=3&sort=id,desc

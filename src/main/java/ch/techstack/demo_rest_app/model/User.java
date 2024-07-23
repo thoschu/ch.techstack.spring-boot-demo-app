@@ -25,6 +25,7 @@ public class User {
     @JoinColumn(name = "userId")
     private Set<Todo> todos;
 
+    @Column(nullable = false)
     private String secret;
 
     public User() {
