@@ -88,16 +88,12 @@ class SecurityConfig {
 //                        .permitAll()
 //                )
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/greeting/**").authenticated()
-                )
-                .authorizeHttpRequests(
-                        request -> request.requestMatchers("/todo/**").authenticated()
-                )
-                .authorizeHttpRequests(
-                        request -> request.requestMatchers("/registration").authenticated()
-                )
-                .authorizeHttpRequests(
-                        request -> request.requestMatchers("/user/**").authenticated()
+                        request -> request.requestMatchers(
+                                "/greeting/**",
+                                "/todo/**",
+                                "/registration",
+                                "/user/**"
+                        ).authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
