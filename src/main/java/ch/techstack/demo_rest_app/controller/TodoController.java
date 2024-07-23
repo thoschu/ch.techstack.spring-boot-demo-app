@@ -74,8 +74,19 @@ public class TodoController {
 //                .build();
     }
 
+    @GetMapping(value = "/todo/{requestedId}")
+    public ResponseEntity<Todo> fetchTodoByPathVariable(@PathVariable Long requestedId) {
+        Optional<Todo> todo = todoService.findById(requestedId);
+
+        if(todo.isPresent()) {
+            return new ResponseEntity<>(todo.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new Todo(), HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping(value = "/todo")
-    public ResponseEntity<Todo> fetchTodo(@RequestParam(value = "id") Optional<Long> id) {
+    public ResponseEntity<Todo> fetchTodoByRequestParam(@RequestParam(value = "id") Optional<Long> id) {
 
         if(id.isPresent()) {
             Optional<Todo> todo = todoService.findById(id.get());
@@ -161,18 +172,44 @@ public class TodoController {
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 
-    @PutMapping("/todo")
-    public ResponseEntity<Todo> editTodo(@RequestBody() Todo editedTodo) {
-        Optional<Todo> todo = todoService.findById(editedTodo.getId());
+    @PutMapping("/todo/{requestedId}")
+    private ResponseEntity<Void> putTodo(@PathVariable Long requestedId, @RequestBody Todo todoUpdate) {
+        System.out.println(todoUpdate.getId());
+
+        Optional<Todo> todo = todoService.findById(requestedId);
 
         if(todo.isPresent()) {
+            Long id = todo.get().getId();
+            String title = (todoUpdate.getTitle() != null) ? todoUpdate.getTitle() : todo.get().getTitle();
+            String description = (todoUpdate.getDescription() != null) ? todoUpdate.getDescription() : todo.get().getDescription();
+
+            Todo editedTodo = new Todo();
+            editedTodo.setId(id);
+            editedTodo.setTitle(title);
+            editedTodo.setDescription(description);
+            editedTodo.setIsDone(todo.get().getIsDone());
+            editedTodo.setUserId(todo.get().getUserId());
+
             todoService.save(editedTodo);
 
-            return new ResponseEntity<>(editedTodo, HttpStatus.OK);
+            return ResponseEntity.noContent().build();
         }
 
-        return new ResponseEntity<>(editedTodo, HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
+
+//    @PutMapping("/todo")
+//    public ResponseEntity<Todo> editTodo(@RequestBody() Todo editedTodo) {
+//        Optional<Todo> todo = todoService.findById(editedTodo.getId());
+//
+//        if(todo.isPresent()) {
+//            todoService.save(editedTodo);
+//
+//            return new ResponseEntity<>(editedTodo, HttpStatus.OK);
+//        }
+//
+//        return new ResponseEntity<>(editedTodo, HttpStatus.NOT_FOUND);
+//    }
 
     @PatchMapping("/todo/done")
     public ResponseEntity<Todo> toggleTodoIsDone(@RequestParam(value = "id") Long id) {

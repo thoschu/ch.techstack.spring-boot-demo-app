@@ -40,6 +40,58 @@ class BasicApplicationTests {
 	private UserController userController;
 
 	@Test
+	@DirtiesContext
+	void shouldNotUpdateAnNotExistingTodo() {
+		Number requestedId = 10000000;
+		Todo todoUpdate = new Todo();
+		String kind = this.getRandowmString();
+
+		todoUpdate.setTitle("Hallo test update 2 " + kind);
+		todoUpdate.setDescription("Foo bar update 2: " + getRandowmString());
+
+		HttpEntity<Todo> request = new HttpEntity<>(todoUpdate);
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("sarah", "xyz123")
+				.exchange("/todo/" + requestedId, HttpMethod.PUT, request, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DirtiesContext
+	void shouldUpdateAnExistingTodo() {
+		Number requestedId = 1;
+		Todo todoUpdate = new Todo();
+		String kind = this.getRandowmString();
+
+		todoUpdate.setTitle("Hallo test update " + kind);
+		todoUpdate.setDescription("Foo bar update: " + getRandowmString());
+
+		HttpEntity<Todo> request = new HttpEntity<>(todoUpdate);
+		ResponseEntity<Void> response = restTemplate
+				.withBasicAuth("sarah", "xyz123")
+				.exchange("/todo/" + requestedId, HttpMethod.PUT, request, Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<String> getResponse = restTemplate
+				.withBasicAuth("sarah", "xyz123")
+				.getForEntity("/todo/" + requestedId, String.class);
+
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+
+		Number id = documentContext.read("$.id");
+		String title = documentContext.read("$.title");
+		String description = documentContext.read("$.description");
+
+		assertThat(id).isEqualTo(requestedId);
+		assertThat(title).isEqualTo(todoUpdate.getTitle());
+		assertThat(description).isEqualTo(todoUpdate.getDescription());
+	}
+
+	@Test
 	void shouldReturnTestString() {
 		String expectedInt = "77";
 		ResponseEntity<String> response = restTemplate
