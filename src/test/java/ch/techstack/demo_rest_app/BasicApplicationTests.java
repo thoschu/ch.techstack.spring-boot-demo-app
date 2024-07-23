@@ -44,9 +44,8 @@ class BasicApplicationTests {
 	void shouldNotUpdateAnNotExistingTodo() {
 		Number requestedId = 10000000;
 		Todo todoUpdate = new Todo();
-		String kind = this.getRandowmString();
 
-		todoUpdate.setTitle("Hallo test update 2 " + kind);
+		todoUpdate.setTitle("Hallo test update 2 " + this.getRandowmString());
 		todoUpdate.setDescription("Foo bar update 2: " + getRandowmString());
 
 		HttpEntity<Todo> request = new HttpEntity<>(todoUpdate);
