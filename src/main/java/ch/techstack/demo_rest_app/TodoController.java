@@ -8,11 +8,10 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class TodoController {
     private static final String hello = "Hello ";
-    private final String textHelloWorld = TodoController.hello + "World!";
 
     @GetMapping
     public String hello() {
-        return this.textHelloWorld;
+        return TodoController.hello + "World!";
     }
 
     @GetMapping("/greet")
