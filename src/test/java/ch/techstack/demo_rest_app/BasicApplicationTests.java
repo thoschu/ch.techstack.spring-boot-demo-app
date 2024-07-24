@@ -41,6 +41,53 @@ class BasicApplicationTests {
 
 	@Test
 	@DirtiesContext
+	void shouldDeleteAnExistingTodo() {
+		TestRestTemplate withBasicAuthSarah = restTemplate
+				.withBasicAuth("sarah", "xyz123");
+
+		ResponseEntity<Todo[]> getResponse1 = withBasicAuthSarah
+				.getForEntity("/todo/all", Todo[].class);
+
+		Todo[] todos = getResponse1.getBody();
+		int todosLength = todos.length;
+		Todo lastTodo = todos[todosLength - 1];
+		Long lastTodoId = lastTodo.getId();
+		HttpStatusCode statusCode1 = getResponse1.getStatusCode();
+
+		assertThat(statusCode1).isEqualTo(HttpStatus.OK);
+		assertThat(lastTodoId).isNotNull();
+
+		ResponseEntity<Void> response2 = withBasicAuthSarah
+				.exchange(
+						"/todo/" + lastTodoId,
+						HttpMethod.DELETE,
+						null,
+						Void.class
+				);
+		HttpStatusCode statusCode2 = response2.getStatusCode();
+
+		assertThat(statusCode2).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<String> getResponse3 = withBasicAuthSarah
+				.getForEntity("/todo/" + lastTodoId, String.class);
+		HttpStatusCode statusCode3 = getResponse3.getStatusCode();
+
+		assertThat(statusCode3).isEqualTo(HttpStatus.NOT_FOUND);
+
+		ResponseEntity<Void> response4 = withBasicAuthSarah
+				.exchange(
+						"/todo/" + lastTodoId,
+						HttpMethod.DELETE,
+						null,
+						Void.class
+				);
+		HttpStatusCode statusCode4 = response4.getStatusCode();
+
+		assertThat(statusCode4).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DirtiesContext
 	void shouldNotUpdateAnNotExistingTodo() {
 		Number requestedId = 10000000;
 		Todo todoUpdate = new Todo();
