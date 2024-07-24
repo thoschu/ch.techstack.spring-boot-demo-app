@@ -59,3 +59,10 @@
 > 
 > docker run -p 81:8080 --name demo-app --network my-network -t thoschu/spring-boot-demo-app 
 >
+
+## Extra Links
+
+### https://reflectoring.io/spring-resttemplate/
+
+### https://spring.academy/courses
+

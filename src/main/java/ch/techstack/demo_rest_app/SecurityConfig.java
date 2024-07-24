@@ -14,12 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-// https://reflectoring.io/spring-resttemplate/
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
-    private static final String role = "OWNER";
+    private static final String roleOwner = "OWNER";
 
 //    @Bean
 //    SecurityFilterChain filterChainTest(HttpSecurity http) throws Exception {
@@ -60,7 +58,7 @@ class SecurityConfig {
                                 .requestMatchers(
                                         "/test/**"
                                 )
-                                .hasRole(SecurityConfig.role)
+                                .hasRole(SecurityConfig.roleOwner)
                 )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
@@ -81,7 +79,7 @@ class SecurityConfig {
         UserDetails sarah = users
                 .username("sarah")
                 .password(encoder().encode("xyz123"))
-                .roles(SecurityConfig.role) // new role
+                .roles(SecurityConfig.roleOwner) // new role
                 .build();
 
         return new InMemoryUserDetailsManager(tom1, sarah);
