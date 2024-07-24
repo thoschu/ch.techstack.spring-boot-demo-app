@@ -21,6 +21,16 @@
 
 > https://docs.spring.io/spring-boot/index.html
 
+> https://docs.spring.io/spring-boot/how-to/actuator.html
+> > http://localhost:8080/actuator
+> 
+> > http://localhost:8080/actuator/health
+>
+> > http://localhost:8080/actuator/info
+> 
+> https://docs.spring.io/spring-boot/reference/actuator/endpoints.html#page-title
+>
+
 ### Maven
 
 #### Maven Central Repository (remote)
