@@ -21,12 +21,12 @@
 > ./mvnw spring-boot:run
 > 
 
-### Start with Maven
-> ./mvnw spring-boot:run
-> 
-
-### Build JAR with Maven
+#### Build JAR with Maven
 > ./mvnw clean package
 > 
 > java -jar target/spring-boot-demo-app-0.0.1-SNAPSHOT.jar
+> 
+
+### Thymeleaf
+> https://www.thymeleaf.org/index.html
 > 
