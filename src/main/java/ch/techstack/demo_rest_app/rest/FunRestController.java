@@ -15,7 +15,7 @@ public class FunRestController {
 
     @GetMapping
     public String hello() {
-        return FunRestController.hello + "World!!!";
+        return FunRestController.hello + "World!";
     }
 
     @GetMapping("/name")

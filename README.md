@@ -21,7 +21,6 @@
 
 > https://docs.spring.io/spring-boot/index.html
 
-
 ### Maven
 
 #### Maven Central Repository (remote)
