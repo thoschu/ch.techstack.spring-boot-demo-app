@@ -1,4 +1,4 @@
-8# ch.techstack.spring-boot-demo-app
+# ch.techstack.spring-boot-demo-app
 
 ## Notices
 
@@ -42,14 +42,19 @@
 > ./mvnw spring-boot:run
 > 
 
-#### Build JAR with Maven
-> ./mvnw clean package
+#### Build JAR with Maven and run via Java
+> https://maven.apache.org/
+> > ./mvnw clean compile test
 > 
-> java -jar target/spring-boot-demo-app-0.0.1-SNAPSHOT.jar
+> > ./mvnw clean package
+> 
+> > java -jar ./target/spring-boot-demo-app-0.0.1-SNAPSHOT.jar
 > 
 
 ### Thymeleaf
 > https://www.thymeleaf.org/index.html
 > 
 
-
+### Running from the command-line
+1. > java -jar ./target/spring-boot-demo-app-0.0.1-SNAPSHOT.jar
+2. >./mvnw spring-boot:run
