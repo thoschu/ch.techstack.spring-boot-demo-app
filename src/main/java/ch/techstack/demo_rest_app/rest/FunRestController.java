@@ -1,15 +1,15 @@
 package ch.techstack.demo_rest_app.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 @RestController
 public class FunRestController {
     private static final String hello = "Hello ";
+    private final Coach coach;
 
     @Value("${developer.name}")
     private String name;
@@ -20,11 +20,13 @@ public class FunRestController {
     @Value("${team.name}")
     private String teamName;
 
-    FunRestController() {
-        String token = "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJpc3MiOiJhdXRoMCJ9.mZ0m_N1J4PgeqWmi903JuUoDRZDBPB7HwkS4nVyWH1M";
-        DecodedJWT jwt = JWT.decode(token);
+    // @Autowired
+    FunRestController(
+            @Qualifier("tennisCoach") Coach coach
+    ) {
+        super();
 
-        System.out.println(jwt.getToken());
+        this.coach = coach;
     }
 
     // expose "/" that return "Hello World!!!"
@@ -50,5 +52,10 @@ public class FunRestController {
                 .concat(this.name)
                 .concat(sepAnd)
                 .concat(this.teamName);
+    }
+
+    @GetMapping("/coach")
+    public String coach() {
+        return this.coach.getDailyWorkout();
     }
 }

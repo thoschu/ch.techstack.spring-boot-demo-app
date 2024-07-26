@@ -65,3 +65,10 @@
 ### Running from the command-line
 1. > java -jar ./target/spring-boot-demo-app-0.0.1-SNAPSHOT.jar
 2. >./mvnw spring-boot:run
+
+### Spring Container (Object Factory)
+> Inversion of Control
+
+> Dependency Injection
+> - Constructor
+> - Setter
