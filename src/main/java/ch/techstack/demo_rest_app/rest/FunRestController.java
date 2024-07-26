@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 @RestController
 public class FunRestController {
     private static final String hello = "Hello ";
@@ -15,8 +18,10 @@ public class FunRestController {
     private String applicationName;
 
     FunRestController() {
-        System.out.println("--------------");
-        System.out.println(applicationName);
+        String token = "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJpc3MiOiJhdXRoMCJ9.mZ0m_N1J4PgeqWmi903JuUoDRZDBPB7HwkS4nVyWH1M";
+        DecodedJWT jwt = JWT.decode(token);
+
+        System.out.println(jwt.getToken());
     }
 
     // expose "/" that return "Hello World!!!"
@@ -28,6 +33,6 @@ public class FunRestController {
 
     @GetMapping("/name")
     public String developerName() {
-        return applicationName + " by " + this.name;
+        return applicationName.toUpperCase() + " by " + this.name;
     }
 }
