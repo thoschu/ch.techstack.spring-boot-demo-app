@@ -37,6 +37,9 @@
 > https://mvnrepository.com/
 > 
 > https://mvnrepository.com/repos/central
+> 
+> > ./mvnw help:effective-pom
+> 
 
 #### Start the App with Maven
 > ./mvnw spring-boot:run

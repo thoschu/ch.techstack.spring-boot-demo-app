@@ -11,6 +11,14 @@ public class FunRestController {
     @Value("${developer.name}")
     private String name;
 
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    FunRestController() {
+        System.out.println("--------------");
+        System.out.println(applicationName);
+    }
+
     // expose "/" that return "Hello World!!!"
 
     @GetMapping
@@ -20,6 +28,6 @@ public class FunRestController {
 
     @GetMapping("/name")
     public String developerName() {
-        return this.name;
+        return applicationName + " by " + this.name;
     }
 }
