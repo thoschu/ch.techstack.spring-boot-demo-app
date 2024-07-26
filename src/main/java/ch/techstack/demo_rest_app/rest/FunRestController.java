@@ -17,6 +17,9 @@ public class FunRestController {
     @Value("${spring.application.name}")
     private String applicationName;
 
+    @Value("${team.name}")
+    private String teamName;
+
     FunRestController() {
         String token = "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJpc3MiOiJhdXRoMCJ9.mZ0m_N1J4PgeqWmi903JuUoDRZDBPB7HwkS4nVyWH1M";
         DecodedJWT jwt = JWT.decode(token);
@@ -28,11 +31,24 @@ public class FunRestController {
 
     @GetMapping
     public String hello() {
-        return FunRestController.hello + "World!";
+        StringBuilder stringBuilder = new StringBuilder(100);
+
+        stringBuilder.append(FunRestController.hello);
+        stringBuilder.append("World!");
+
+        return stringBuilder.toString();
     }
 
     @GetMapping("/name")
     public String developerName() {
-        return applicationName.toUpperCase() + " by " + this.name;
+        String sepBy = " by ";
+        String sepAnd = " and: ";
+
+        return applicationName
+                .toUpperCase()
+                .concat(sepBy)
+                .concat(this.name)
+                .concat(sepAnd)
+                .concat(this.teamName);
     }
 }

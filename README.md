@@ -5,6 +5,10 @@
 ### Spring
 > https://spring.io
 > 
+> > https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+> 
+> > https://docs.spring.io/spring-boot/reference/features/logging.html
+> 
 
 #### Spring initializr
 > https://start.spring.io
